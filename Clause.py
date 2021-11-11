@@ -1,13 +1,41 @@
 from enum import Enum
 from os import error
 
+operations_str = dict({
+    'simpler': {
+        'Negation': '!',
+        'Disjuntion': '+',
+        'Conjuntion': '*',
+        'Implication': '>',
+        'LeftImplication': '<',
+        'Equivalent': '<>'
+    },
+    'computer': {
+        'Negation': '~',
+        'Disjuntion': '|',
+        'Conjuntion': '&',
+        'Implication': '->',
+        'LeftImplication': '<-',
+        'Equivalent': '<->'
+    },
+    'formal': {
+        'Negation': '¬',
+        'Disjuntion': '∨',
+        'Conjuntion': '∧',
+        'Implication': '=>',
+        'LeftImplication': '<=',
+        'Equivalent': '<=>'
+    }
+})
+
+print_format = 'formal'
 class Operations(Enum):
-    Negation = '¬'
-    Disjuntion = '∨'
-    Conjuntion = '∧'
-    Implication = '=>'
-    LeftImplication = '<='
-    Equivalent = '<=>'
+    Negation = operations_str[print_format]['Negation']
+    Disjuntion = operations_str[print_format]['Disjuntion']
+    Conjuntion = operations_str[print_format]['Conjuntion']
+    Implication = operations_str[print_format]['Implication']
+    LeftImplication = operations_str[print_format]['LeftImplication']
+    Equivalent = operations_str[print_format]['Equivalent']
 
 class ClauseType(Enum):
     Clause = ''
@@ -37,6 +65,9 @@ class Literal:
     
     def complement(self):
         return Literal(self.literal, not self.neg)
+    
+    def simplify(self):
+        return self.copy()
 
 class Clause:
     def __init__(self, clauses=[], operation=Operations.Disjuntion, type=ClauseType.Clause):
@@ -62,7 +93,7 @@ class Clause:
             return ''
         if len(self.clauses) == 1:
             return str(self.clauses[0])
-        clauses_str = [str(clause) if isinstance(clause, Literal) else f'({str(clause)})' for clause in self.clauses]
+        clauses_str = [str(clause) if isinstance(clause, Literal) or len(clause.clauses) == 1 else f'({str(clause)})' for clause in self.clauses]
         return f' {self.operation.value} '.join(clauses_str)
     
     def __eq__(self, clause):
@@ -107,6 +138,8 @@ class Clause:
             operation_comp = Operations.Disjuntion
 
         clauses_comp = [clause.complement() for clause in self.clauses]
+        if len(clauses_comp) == 1:
+            operation_comp = Operations.Disjuntion
         return Clause(clauses_comp, operation_comp)
         
     def simplify(self):

@@ -59,7 +59,8 @@ def parse_raw_clause(raw_string):
                 break
         if cnt_open > 0:
             raise error('Syntaxis error related to parentheses')
-        
+        if idx == 1:
+            raise error(f'Empty left clause, remained raw string = "{raw_string}"')
         left_clause = parse_raw_clause(raw_string[1:idx])
         right_raw_string = raw_string[idx+1:]
     else:
@@ -68,6 +69,8 @@ def parse_raw_clause(raw_string):
             if possible_operation(c):
                 idx = idx_c
                 break
+        if idx == 0:
+            raise error(f'Empty left clause, remained raw string = "{raw_string}"')
         left_clause = Literal(raw_string[:idx])
         right_raw_string = raw_string[idx:]
     
