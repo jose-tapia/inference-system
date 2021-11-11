@@ -35,7 +35,6 @@ def simplify_clause(clause):
     else:
         return clause
 
-
 def distributive_conjuntion(left_clause, right_clause):
     if isinstance(left_clause, Clause) and left_clause.type == ClauseType.F:
         return Clause(type=ClauseType.F)
@@ -121,6 +120,8 @@ def flat_clause(clause):
         elif clause.operation == Operations.Conjuntion:
             result = distributive_conjuntion(left_clause, right_clause).simplify()
         return result
+    elif isinstance(clause, Clause):
+        return clause.simplify()
     else:
         return clause
         
@@ -128,7 +129,7 @@ def CNF(clause):
     """
     Given a nested clause, transform it to a CNF
     """
-    clause_simplified = simplify_clause(clause) 
+    clause_simplified = simplify_clause(clause.copy()) 
     return flat_clause(clause_simplified)   
 
 if __name__ == '__main__':

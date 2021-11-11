@@ -32,6 +32,9 @@ class Literal:
     def __eq__(self, literal):
         return isinstance(literal, Literal) and self.literal == literal.literal and self.neg == literal.neg
 
+    def copy(self):
+        return Literal(self.literal, self.neg)
+    
     def complement(self):
         return Literal(self.literal, not self.neg)
 
@@ -91,6 +94,12 @@ class Clause:
                 return False
         return True
     
+    def copy(self):
+        if self.type != ClauseType.Clause:
+            return Clause(type=self.type)
+        clauses_copy = [clause.copy() for clause in self.clauses]
+        return Clause(clauses_copy, self.operation)
+    
     def complement(self):
         if self.operation == Operations.Disjuntion:
             operation_comp = Operations.Conjuntion
@@ -127,9 +136,7 @@ class Clause:
             if exists_complement or exists_F:
                 return Clause(type=ClauseType.F)
             return Clause(clauses_unique, Operations.Conjuntion)
-                
-            
-            
+                            
 class NestedClause:
     def __init__(self, left_clause=Clause(), right_clause=Clause(), operation=Operations.Disjuntion, neg=False):
         """
@@ -158,7 +165,10 @@ class NestedClause:
         
         clause_str = f'{left_str} {self.operation.value} {right_str}'
         return f'{Operations.Negation.value}({clause_str})' if self.neg else clause_str
-        
+    
+    def copy(self):
+        return NestedClause(self.left_clause.copy(), self.right_clause.copy(), self.operation, self.neg)
+    
     def complement(self):
         # Only works if all operations are disjuntions or conjuntions
         if self.operation == Operations.Disjuntion or self.operation == Operations.Conjuntion:
