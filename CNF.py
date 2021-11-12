@@ -1,5 +1,6 @@
 from os import error
-from Clause import Literal, Clause, NestedClause, Operations, ClauseType
+from Format import Operations, ClauseType
+from Clause import Literal, Clause, NestedClause
 
 def simplify_clause(clause):
     if isinstance(clause, NestedClause):

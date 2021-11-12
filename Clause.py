@@ -1,46 +1,6 @@
-from enum import Enum
 from os import error
+from Format import *
 
-operations_str = dict({
-    'simpler': {
-        'Negation': '!',
-        'Disjuntion': '+',
-        'Conjuntion': '*',
-        'Implication': '>',
-        'LeftImplication': '<',
-        'Equivalent': '<>'
-    },
-    'computer': {
-        'Negation': '~',
-        'Disjuntion': '|',
-        'Conjuntion': '&',
-        'Implication': '->',
-        'LeftImplication': '<-',
-        'Equivalent': '<->'
-    },
-    'formal': {
-        'Negation': '¬',
-        'Disjuntion': '∨',
-        'Conjuntion': '∧',
-        'Implication': '=>',
-        'LeftImplication': '<=',
-        'Equivalent': '<=>'
-    }
-})
-
-print_format = 'formal'
-class Operations(Enum):
-    Negation = operations_str[print_format]['Negation']
-    Disjuntion = operations_str[print_format]['Disjuntion']
-    Conjuntion = operations_str[print_format]['Conjuntion']
-    Implication = operations_str[print_format]['Implication']
-    LeftImplication = operations_str[print_format]['LeftImplication']
-    Equivalent = operations_str[print_format]['Equivalent']
-
-class ClauseType(Enum):
-    Clause = ''
-    T = 'T'
-    F = 'F'
 class Literal:
     # Literal class
     def __init__(self, literal:str='', neg:bool=False):

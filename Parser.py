@@ -1,19 +1,20 @@
 from os import error
-from Clause import NestedClause, Operations, Literal
+from Clause import NestedClause, Literal
+from Format import *
 from CNF import CNF, simplify_clause
 
 def parse_operation(symbol):
-    if symbol in ['~', '!', '¬']:
+    if symbol in all_symbols['Negation']:
         return Operations.Negation
-    elif symbol in ['|', '+', '∨']:
+    elif symbol in all_symbols['Disjuntion']:
         return Operations.Disjuntion
-    elif symbol in ['&', '*', '∧']:
+    elif symbol in all_symbols['Conjuntion']:
         return Operations.Conjuntion
-    elif symbol in ['->', '>', '=>']:
+    elif symbol in all_symbols['Implication']:
         return Operations.Implication
-    elif symbol in ['<-', '<', '<=']:
+    elif symbol in all_symbols['LeftImplication']:
         return Operations.LeftImplication
-    elif symbol in ['<->', '<>', '<=>']:
+    elif symbol in all_symbols['Equivalent']:
         return Operations.Equivalent
     else:
         return None
