@@ -1,11 +1,13 @@
 from Resolution import resolve
 from Parser import obtain_CNF
 
-def satisfy(hypothesis, conclusion, print_kb=False):
+def satisfy_resolution(hypothesis, conclusion, print_kb=False):
     hyp_cnf = [obtain_CNF(hyp) for hyp in hypothesis]
     conc_cnf = obtain_CNF(conclusion)
     
     if print_kb:
+        print(f'C: {conc_cnf}\n')
+        print('The knowledge based is:')
         cnt = 1
         for hyp in hyp_cnf:
             print(f'{cnt}: {hyp}')
@@ -32,4 +34,4 @@ if __name__ == '__main__':
     hypothesis = ['P|Q', 
                   'P=>R']
     conclusion = 'Q|R'
-    print(satisfy(hypothesis, conclusion, True))
+    print(satisfy_resolution(hypothesis, conclusion, True))

@@ -56,10 +56,6 @@ def resolve(left_cnf, right_cnf):
             forgiven_clauses = forgiven_clauses + clauses_comp + [clause]
     
     if complement_pairs_left + conjuntion_complement_right != 1 or complement_pairs_right + conjuntion_complement_left != 1:
-        print(complement_pairs_left)
-        print(complement_pairs_right)
-        print(conjuntion_complement_left)
-        print(conjuntion_complement_right)
         return None
     
     good_clauses = [clause for clause in left_cnf.clauses + right_cnf.clauses if clause not in forgiven_clauses]
