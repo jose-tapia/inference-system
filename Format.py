@@ -3,7 +3,7 @@ from enum import Enum
 operations_list = ['Negation', 'Disjuntion', 'Conjuntion', 'Implication', 'LeftImplication', 'Equivalent']
 
 operations_str = dict({
-    'simpler': {
+    'minimalist': {
         'Negation': '!',
         'Disjuntion': '+',
         'Conjuntion': '*',
@@ -18,6 +18,14 @@ operations_str = dict({
         'Implication': '->',
         'LeftImplication': '<-',
         'Equivalent': '<->'
+    },
+    'mixed': {
+        'Negation': '!',
+        'Disjuntion': '|',
+        'Conjuntion': '&',
+        'Implication': '=>',
+        'LeftImplication': '<=',
+        'Equivalent': '<=>'
     },
     'formal': {
         'Negation': '¬',
