@@ -1,5 +1,6 @@
 from Clause import Clause, Literal, Operations, ClauseType
 from Parser import obtain_CNF
+from CNF import distributive_conjuntion
 
 def resolve(left_cnf, right_cnf):
     if isinstance(left_cnf, Literal):
@@ -28,12 +29,14 @@ def resolve(left_cnf, right_cnf):
     forgiven_clauses = []
     for clause in left_cnf.clauses:
         clause_comp = clause.complement().simplify()
+        if isinstance(clause_comp, Clause) and clause_comp.operation == Operations.Conjuntion:
+            clause_comp = distributive_conjuntion(clause_comp)
         if isinstance(clause_comp, Clause) and clause_comp.operation == Operations.Disjuntion:
             clauses_comp = clause_comp.clauses
         else:
             clauses_comp = [clause_comp]
         
-        if all(clause_comp in right_cnf.clauses for clause_comp in clauses_comp):
+        if all(clause_comp_ in right_cnf.clauses for clause_comp_ in clauses_comp):
             complement_pairs_left = complement_pairs_left + 1
             if len(clauses_comp) > 1:
                 conjuntion_complement_left = conjuntion_complement_left + 1
@@ -44,12 +47,14 @@ def resolve(left_cnf, right_cnf):
     complement_pairs_right = 0
     for clause in right_cnf.clauses:
         clause_comp = clause.complement()
+        if isinstance(clause_comp, Clause) and clause_comp.operation == Operations.Conjuntion:
+            clause_comp = distributive_conjuntion(clause_comp)
         if isinstance(clause_comp, Clause) and clause_comp.operation == Operations.Disjuntion:
             clauses_comp = [clause_comp.clauses]
         else:
             clauses_comp = [clause_comp]
         
-        if all(clause_comp in left_cnf.clauses for clause_comp in clauses_comp):
+        if all(clause_comp_ in left_cnf.clauses for clause_comp_ in clauses_comp):
             complement_pairs_right = complement_pairs_right + 1
             if len(clauses_comp) > 1:
                 conjuntion_complement_right = conjuntion_complement_right + 1

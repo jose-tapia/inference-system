@@ -1,8 +1,8 @@
 from Resolution import resolve
 from Parser import obtain_CNF
 
-def satisfy_resolution(hypothesis, conclusion, print_kb=False):
-    hyp_cnf = [obtain_CNF(hyp) for hyp in hypothesis]
+def satisfy_resolution(hypotheses, conclusion, print_kb=False):
+    hyp_cnf = [obtain_CNF(hyp) for hyp in hypotheses]
     conc_cnf = obtain_CNF(conclusion)
     
     if print_kb:
@@ -31,7 +31,7 @@ def satisfy_resolution(hypothesis, conclusion, print_kb=False):
     return False    
         
 if __name__ == '__main__':
-    hypothesis = ['P|Q', 
+    hypotheses = ['P|Q', 
                   'P=>R']
     conclusion = 'Q|R'
-    print(satisfy_resolution(hypothesis, conclusion, True))
+    print(satisfy_resolution(hypotheses, conclusion, True))

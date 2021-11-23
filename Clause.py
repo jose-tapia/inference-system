@@ -53,7 +53,7 @@ class Clause:
             return ''
         if len(self.clauses) == 1:
             return str(self.clauses[0])
-        clauses_str = [str(clause) if isinstance(clause, Literal) or len(clause.clauses) == 1 else f'({str(clause)})' for clause in self.clauses]
+        clauses_str = [str(clause) if (isinstance(clause, Literal) or len(clause.clauses) == 1) else f'({str(clause)})' for clause in self.clauses]
         return f' {self.operation.value} '.join(clauses_str)
     
     def __eq__(self, clause):
@@ -70,6 +70,7 @@ class Clause:
             return True
         
         # If length of clauses are not equal, then the clauses are different
+        # TODO: Verify that the clauses are simplified
         if len(self.clauses) != len(clause.clauses):
             return False
         
@@ -83,6 +84,9 @@ class Clause:
         for clause_int in self.clauses:
             if clause_int not in clause.clauses:
                 return False
+        for clause_int in clause.clauses:
+            if clause_int not in self.clauses:
+                return False
         return True
     
     def copy(self):
@@ -92,6 +96,12 @@ class Clause:
         return Clause(clauses_copy, self.operation)
     
     def complement(self):
+        if self.type != ClauseType.Clause:
+            if self.type == ClauseType.T:
+                return Clause(type=ClauseType.F)
+            else:
+                return Clause(type=ClauseType.T)
+        
         if self.operation == Operations.Disjuntion:
             operation_comp = Operations.Conjuntion
         else:
@@ -124,10 +134,14 @@ class Clause:
         if self.operation == Operations.Disjuntion:
             if exists_complement or exists_T:
                 return Clause(type=ClauseType.T)
+            if len(clauses_unique) == 1:
+                return clauses_unique[0]
             return Clause(clauses_unique, Operations.Disjuntion)
         else:
             if exists_complement or exists_F:
                 return Clause(type=ClauseType.F)
+            if len(clauses_unique) == 1:
+                return clauses_unique[0]
             return Clause(clauses_unique, Operations.Conjuntion)
                             
 class NestedClause:

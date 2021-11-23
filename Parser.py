@@ -40,6 +40,8 @@ def obtain_operation(right_raw_string):
     return operation, right_raw_string[lim_idx:]
 
 def parse_raw_clause(raw_string):
+    raw_string = raw_string.replace(' and ', '&')
+    raw_string = raw_string.replace(' or ', '|')
     raw_string = raw_string.replace(' ', '')
     if len(raw_string) == 0:
         raise error('Empty literal')
@@ -92,6 +94,7 @@ def obtain_CNF(raw_string):
 if __name__ == '__main__':
     
     A_str = '!(!(!(Add * (s)) + B) => A) <= A'
+    A_str = 'A <> B'
     A = parse_raw_clause(A_str)
     A_simp = simplify_clause(A.copy())
     A_cnf = CNF(A)

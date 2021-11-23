@@ -21,7 +21,7 @@ if __name__ == '__main__':
     with open(file_path, 'r') as file:
         for line in file:
             
-            line_splitted = line.replace('\n', '').replace(' ', '').split(':')
+            line_splitted = line.replace('\n', '').split(':')
             if len(line_splitted) != 2:
                 raise os.error(f'Syntaxis error in line "{line}"')
             if 'C' in line_splitted[0]:
